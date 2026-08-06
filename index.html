@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SRM Name Fetcher</title>
+</head>
+<body>
+
+<h2>Student Name Finder</h2>
+
+<input type="text" id="reg" placeholder="Registration Number"><br><br>
+
+<input type="password" id="pass" placeholder="Password"><br><br>
+
+<button onclick="getName()">Get Name</button>
+
+<h3 id="result"></h3>
+<h3 id="department"></h3>
+<h3 id="semester"></h3>
+<h3 id="section"></h3>
+<h3 id="dob"></h3>
+
+<script>
+async function getName(){
+
+    const reg = document.getElementById("reg").value;
+    const pass = document.getElementById("pass").value;
+
+    const response = await fetch("/getname",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            reg,
+            pass
+        })
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+   document.getElementById("result").innerHTML = `
+        <h2>Student Details</h2>
+        <p><b>Name:</b> ${data.name}</p>
+        <p><b>Department:</b> ${data.details.Department}</p>
+        <p><b>Semester:</b> ${data.details.Semester}</p>
+        <p><b>Section:</b> ${data.details.Section}</p>
+        <p><b>Gender:</b> ${data.details.Gender}</p>
+        <p><b>D.O.B:</b> ${data.details.DOB}</p>
+    `;
+}
+</script>
+
+</body>
+</html>
