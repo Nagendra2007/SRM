@@ -42,11 +42,11 @@ async function getName() {
     document.getElementById("result").innerHTML = `
         <h2>Student Details</h2>
         <p><b>Name:</b> ${data.name}</p>
-        <p><b>Department:</b> ${data.Department}</p>
-        <p><b>Semester:</b> ${data.Semester}</p>
-        <p><b>Section:</b> ${data.Section}</p>
-        <p><b>Gender:</b> ${data.Gender}</p>
-        <p><b>D.O.B:</b> ${data.DOB}</p>
+        <p><b>Department:</b> ${data.details.Department}</p>
+        <p><b>Semester:</b> ${data.details.Semester}</p>
+        <p><b>Section:</b> ${data.details.Section}</p>
+        <p><b>Gender:</b> ${data.details.Gender}</p>
+        <p><b>D.O.B:</b> ${data.details.DOB}</p>
     `;
 }
 </script>
