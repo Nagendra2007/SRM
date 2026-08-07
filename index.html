@@ -1,40 +1,109 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>SRM Name Fetcher</title>
+    <title>SRM Student Details</title>
 </head>
+
 <body>
 
 <h2>Student Name Finder</h2>
 
-<input type="text" id="reg" placeholder="Registration Number"><br><br>
+<input
+type="text"
+id="reg"
+placeholder="Registration Number">
 
-<input type="password" id="pass" placeholder="Password"><br><br>
+<br><br>
 
-<button onclick="getName()">Get Name</button>
+<input
+type="password"
+id="pass"
+placeholder="Password">
 
-<h3 id="result"></h3>
-<h3 id="department"></h3>
-<h3 id="semester"></h3>
-<h3 id="section"></h3>
-<h3 id="dob"></h3>
+<br><br>
+
+<button onclick="getName()">
+Get Details
+</button>
+
+<div id="result"></div>
 
 <script>
+
 async function getName(){
 
-    const reg = document.getElementById("reg").value;
-    const pass = document.getElementById("pass").value;
+    const reg=document.getElementById("reg").value;
+    const pass=document.getElementById("pass").value;
 
-    const response = await fetch("/getname",{
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-            reg,
-            pass
-        })
-    });
+    document.getElementById("result").innerHTML="Loading...";
+
+    try{
+
+        const response=await fetch("/getname",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                reg,
+                pass
+            })
+
+        });
+
+        const data=await response.json();
+
+        console.log(data);
+
+        if(data.error){
+
+            document.getElementById("result").innerHTML=data.error;
+
+            return;
+
+        }
+
+        document.getElementById("result").innerHTML=`
+
+        <h2>Student Details</h2>
+
+        <p><b>Name:</b> ${data.name}</p>
+
+        <p><b>Institution:</b> ${data.Institution}</p>
+
+        <p><b>Department:</b> ${data.Department}</p>
+
+        <p><b>Semester:</b> ${data.Semester}</p>
+
+        <p><b>Section:</b> ${data.Section}</p>
+
+        <p><b>Gender:</b> ${data.Gender}</p>
+
+        <p><b>D.O.B:</b> ${data.DOB}</p>
+
+        `;
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        document.getElementById("result").innerHTML="Something went wrong.";
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>    });
 
     const data = await response.json();
     console.log(data);
