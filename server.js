@@ -69,7 +69,7 @@ app.post("/getname", async (req, res) => {
 
         res.json({
             name,
-            ...details
+            details
         });
 
     } catch (err) {
