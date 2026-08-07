@@ -1,8 +1,5 @@
 [phases.setup]
-nixPkgs = [
-  "nodejs",
-  "playwright-driver.browsers"
-]
+nixPkgs = ["nodejs"]
 
 [phases.install]
 cmds = [
