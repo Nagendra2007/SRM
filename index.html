@@ -1,40 +1,58 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>SRM Student Details</title>
+    <title>SRM Name Fetcher</title>
 </head>
-
 <body>
 
 <h2>Student Name Finder</h2>
 
-<input
-type="text"
-id="reg"
-placeholder="Registration Number">
+<input type="text" id="reg" placeholder="Registration Number"><br><br>
 
-<br><br>
+<input type="password" id="pass" placeholder="Password"><br><br>
 
-<input
-type="password"
-id="pass"
-placeholder="Password">
-
-<br><br>
-
-<button onclick="getName()">
-Get Details
-</button>
+<button onclick="getName()">Get Name</button>
 
 <div id="result"></div>
 
 <script>
+async function getName() {
 
-async function getName(){
+    const reg = document.getElementById("reg").value;
+    const pass = document.getElementById("pass").value;
 
-    const reg=document.getElementById("reg").value;
-    const pass=document.getElementById("pass").value;
+    const response = await fetch("/getname", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ reg, pass })
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (data.error) {
+        document.getElementById("result").innerHTML =
+            `<h3>${data.error}</h3>`;
+        return;
+    }
+
+    document.getElementById("result").innerHTML = `
+        <h2>Student Details</h2>
+        <p><b>Name:</b> ${data.name}</p>
+        <p><b>Department:</b> ${data.Department}</p>
+        <p><b>Semester:</b> ${data.Semester}</p>
+        <p><b>Section:</b> ${data.Section}</p>
+        <p><b>Gender:</b> ${data.Gender}</p>
+        <p><b>D.O.B:</b> ${data.DOB}</p>
+    `;
+}
+</script>
+
+</body>
+</html>    const pass=document.getElementById("pass").value;
 
     document.getElementById("result").innerHTML="Loading...";
 
