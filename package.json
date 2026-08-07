@@ -1,11 +1,11 @@
 {
   "name": "project",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
   "type": "commonjs",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "npx playwright install chromium"
   },
   "dependencies": {
     "express": "^5.2.1",
