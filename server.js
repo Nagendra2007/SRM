@@ -23,15 +23,15 @@ app.post("/getname", async (req, res) => {
 
         const page = await browser.newPage();
 
-        // Login page
+        // Open login page
         await page.goto("https://srmapi.in/login", {
             waitUntil: "domcontentloaded",
             timeout: 60000
         });
 
+        // Login
         await page.fill("#regNumber", reg);
         await page.fill("#password", pass);
-
         await page.click("button[type='submit']");
 
         // Wait for dashboard
@@ -39,28 +39,23 @@ app.post("/getname", async (req, res) => {
             timeout: 60000
         });
 
-        console.log("Dashboard URL:", await page.url());
-
         const name = (await page.locator("h2").textContent())?.trim();
 
-        // Profile page
+        // Open profile
         await page.goto("https://srmapi.in/profile", {
-            waitUntil: "domcontentloaded"
+            waitUntil: "domcontentloaded",
+            timeout: 60000
         });
 
         await page.waitForSelector(".p-6.pt-0", {
             timeout: 60000
         });
 
-        console.log("Profile URL:", await page.url());
-
         const cards = page.locator(".p-6.pt-0 .grid > div");
 
-        console.log("Cards:", await cards.count());
+        const count = await cards.count();
 
         let details = {};
-
-        const count = await cards.count();
 
         for (let i = 0; i < count; i++) {
 
@@ -71,8 +66,6 @@ app.post("/getname", async (req, res) => {
                 details[heading.trim()] = value.trim();
             }
         }
-
-        console.log(details);
 
         res.json({
             name,
@@ -89,60 +82,15 @@ app.post("/getname", async (req, res) => {
 
     } finally {
 
-        if (browser)
+        if (browser) {
             await browser.close();
-
-    }
-
-});
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-    console.log("Server running on", PORT);
-});        const name = await page.locator("h2").textContent();
-
-        await page.goto("https://srmapi.in/profile");
-
-        await page.waitForLoadState("networkidle");
-
-        const cards = page.locator(".p-6.pt-0 .grid > div");
-
-        const count = await cards.count();
-
-        let details = {};
-
-        for (let i = 0; i < count; i++) {
-
-            const heading = await cards.nth(i).locator("h4").textContent();
-            const value = await cards.nth(i).locator("p").textContent();
-
-            if (heading && value) {
-                details[heading.trim()] = value.trim();
-            }
         }
 
-        await browser.close();
-
-        res.json({
-            name,
-            ...details
-        });
-
-    } catch (err) {
-
-        console.log(err);
-
-        res.status(500).json({
-            error: err.message
-        });
-
     }
-
 });
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Server Running on ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
